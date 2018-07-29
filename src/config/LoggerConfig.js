@@ -155,15 +155,15 @@ class LoggerConfig {
   }
 
   static getLoggerOptions() {
-    const requestFilterBlacklist = ['headers', 'httpVersion', 'originalUrl'];
+    const requestFilterBlacklist = ['headers', 'httpVersion', 'originalUrl', 'url', 'query', 'method'];
     const responseFilterBlacklist = [];
     const bodyBlacklist = Settings.get('LOG_BODY_BLACKLIST') || [];
     const ignoredRoutes = ['/', '/status', '/favicon.ico'];
-
+    const ignoredMethods = ['OPTIONS'];
     return {
       winstonInstance: winston,
       meta: true,
-      msg: 'HTTP {{res.statusCode}} {{req.method}} {{req.url}}',
+      msg: `HTTP method={{req.method}} route={{req.originalUrl.split('?')[0]}} query={{JSON.stringify(req.query)}} origin={{req.ip}} size={{res._size}}B`,
       expressFormat: false,
       colorStatus: true,
       ignoredRoutes,
@@ -185,19 +185,17 @@ class LoggerConfig {
         return res[propName];
       },
       dynamicMeta: (req) => {
-        return {
-          session: req.session ? req.session.id : null,
-          user: req.session ? req.session.user.id : null,
-        };
+        const dynamicMeta = {};
+        if (req.session) {
+          dynamicMeta.session = req.session.id || null;
+          dynamicMeta.user = req.session.user ? req.session.user.id : null;
+        }
+        return dynamicMeta;
       },
       skip: (req) => {
         const method = req.method.toUpperCase();
-        if (method === 'GET' || method === 'OPTIONS') {
-          return true;
-        }
-
-        return false;
-      },
+        return ignoredMethods.includes(method);
+      }
     };
   }
 }
