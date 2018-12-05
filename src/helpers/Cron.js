@@ -21,7 +21,7 @@ class Cron {
       throw new Error('Cron: key must be a unique');
     }
 
-    workers.push(new CronJob(timer, worker, null, false, 'Etc/UTC'));
+    workers[key] = new CronJob(timer, worker, null, false, 'Etc/UTC');
 
     return Cron.get(key);
   }
