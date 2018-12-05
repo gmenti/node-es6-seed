@@ -39,8 +39,8 @@ LoggerConfig.expressRequest(app);
 /* Status endpoint */
 app.get(['/', '/status'], async (req, res) => {
   try {
-    await knex.raw('SELECT 1 + 1 as result');
-    res.send('ok');
+    await knex.raw('SELECT 1');
+    res.sendStatus(204);
   } catch (err) {
     Logger.error(err);
     res.status(500).send('error');
