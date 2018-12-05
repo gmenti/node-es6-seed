@@ -2,10 +2,9 @@ const Joi = require('joi');
 const RouteValidator = require('../../middlewares/RouteValidator');
 
 class UserSchema extends RouteValidator {
-
   static get get() {
     const schema = {
-      params: Joi.object().keys({
+      params: Joi.object({
         userId: Joi.number().integer().required(),
       }),
     };
@@ -21,8 +20,8 @@ class UserSchema extends RouteValidator {
 
   static get post() {
     const schema = {
-      body: Joi.object().keys({
-        name: Joi.string().required(),
+      body: Joi.object({
+        name: Joi.string().required().trim(),
       }),
     };
 
@@ -31,11 +30,11 @@ class UserSchema extends RouteValidator {
 
   static get put() {
     const schema = {
-      params: Joi.object().keys({
+      params: Joi.object({
         userId: Joi.number().integer().required(),
       }),
-      body: Joi.object().keys({
-        name: Joi.string().required(),
+      body: Joi.object({
+        name: Joi.string().required().trim(),
       }),
     };
 
@@ -44,7 +43,7 @@ class UserSchema extends RouteValidator {
 
   static get delete() {
     const schema = {
-      params: Joi.object().keys({
+      params: Joi.object({
         userId: Joi.number().integer().required(),
       }),
     };
