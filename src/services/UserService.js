@@ -2,38 +2,25 @@ const { knex } = require('../config/db');
 const UserModel = require('../models/UserModel');
 const { toUnixEpoch } = require('../helpers/Datetime');
 
+const formatRecord = record => ({
+  ...record,
+  createdAt: toUnixEpoch(user.createdAt),
+  updatedAt: toUnixEpoch(user.updatedAt),
+  deletedAt: user.deletedAt ? toUnixEpoch(user.deletedAt) : null,
+});
+
 class UserService {
-
   static async list() {
-    const list = await UserModel.list();
-
-    const result = list.map(user => ({
-      id: user.id,
-      name: user.name,
-      status: user.status,
-      createdAt: toUnixEpoch(user.createdAt),
-      updatedAt: toUnixEpoch(user.updatedAt),
-      deletedAt: user.deletedAt ? toUnixEpoch(user.deletedAt) : null,
-    }));
-
-    return list;
+    const records = await UserModel.list();
+    return records.map(formatRecord);
   }
 
   static async get(data) {
-    let user = await UserModel.get(data);
-
-    if (user) {
-      user = {
-        id: user.id,
-        name: user.name,
-        status: user.status,
-        createdAt: toUnixEpoch(user.createdAt),
-        updatedAt: toUnixEpoch(user.updatedAt),
-        deletedAt: user.deletedAt ? toUnixEpoch(user.deletedAt) : null,
-      };
+    const record = await UserModel.get(data);
+    if (!record) {
+      return null;
     }
-
-    return user;
+    return formatRecord(record);
   }
 
   static post(data) {
@@ -41,14 +28,11 @@ class UserService {
   }
 
   static put(userId, data) {
-    return knex.transaction(async (trx) => {
-      const user = await UserModel.get(userId)
-        .transacting(trx);
+    return knex.transaction(async trx => {
+      const user = await UserModel.get(userId).transacting(trx);
 
       if (user) {
-        await UserModel.put(user.id, data)
-          .transacting(trx);
-
+        await UserModel.put(user.id, data).transacting(trx);
         return true;
       }
 
@@ -57,14 +41,11 @@ class UserService {
   }
 
   static delete(data) {
-    return knex.transaction(async (trx) => {
-      const user = await UserModel.get(userId)
-        .transacting(trx);
+    return knex.transaction(async trx => {
+      const user = await UserModel.get(userId).transacting(trx);
 
       if (user) {
-        await UserModel.delete(user.id, data)
-          .transacting(trx);
-
+        await UserModel.delete(user.id, data).transacting(trx);
         return true;
       }
 
