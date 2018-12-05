@@ -8,10 +8,11 @@ class UserModel {
 
   static get(userId) {
     return knex
-      .first('id, name, status')
+      .select('id', 'name', 'status')
       .from('user')
+      .whereNot('user.status', userType.DELETED)
       .where('user.id', userId)
-      .whereNot('user.status', userType.DELETED);
+      .first();
   }
 
   static post(data) {
