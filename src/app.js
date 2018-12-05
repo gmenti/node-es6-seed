@@ -27,9 +27,11 @@ app.use(helmet());
 app.use(cors());
 app.use(compression());
 app.use(i18n.init);
-app.use(bodyParser.json({
-  limit: process.env.BODY_LIMIT,
-}));
+app.use(
+  bodyParser.json({
+    limit: process.env.BODY_LIMIT,
+  }),
+);
 
 /* Log express request and response */
 LoggerConfig.expressRequest(app);
@@ -37,8 +39,8 @@ LoggerConfig.expressRequest(app);
 /* Status endpoint */
 app.get(['/', '/status'], async (req, res) => {
   try {
-    await knex.raw('SELECT 1 + 1 as result');
-    res.send('ok');
+    await knex.raw('SELECT 1');
+    res.sendStatus(204);
   } catch (err) {
     Logger.error(err);
     res.status(500).send('error');
