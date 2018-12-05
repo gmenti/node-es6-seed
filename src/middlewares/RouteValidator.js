@@ -27,6 +27,7 @@ class RouteValidator {
         body: validation.value.body || {},
         query: validation.value.query || {},
         params: validation.value.params || {},
+        headers: validation.value.headers || {},
       };
       next();
     } else {
