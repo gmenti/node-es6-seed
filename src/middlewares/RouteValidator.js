@@ -15,11 +15,19 @@ class RouteValidator {
       return k;
     });
 
-    const validation = Joi.validate(data, schema, {
+    const options = {
+      abortEarly: false,
       allowUnknown: true,
-    });
+      stripUnknown: true,
+    };
 
+    const validation = Joi.validate(data, schema, options);
     if (!validation.error) {
+      req.joi = {
+        body: validation.value.body || {},
+        query: validation.value.query || {},
+        params: validation.value.params || {},
+      };
       next();
     } else {
       res.status(400).send({
