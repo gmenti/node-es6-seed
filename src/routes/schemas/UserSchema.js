@@ -5,7 +5,7 @@ class UserSchema extends Schema {
 
   static get(data) {
     const schema = {
-      params: Joi.object().keys({
+      params: Joi.object({
         userId: Joi.number().integer().required(),
       }),
     };
@@ -21,8 +21,8 @@ class UserSchema extends Schema {
 
   static post(data) {
     const schema = {
-      body: Joi.object().keys({
-        name: Joi.string().required(),
+      body: Joi.object({
+        name: Joi.string().required().trim(),
       }),
     };
 
@@ -31,11 +31,11 @@ class UserSchema extends Schema {
 
   static put(data) {
     const schema = {
-      params: Joi.object().keys({
+      params: Joi.object({
         userId: Joi.number().integer().required(),
       }),
-      body: Joi.object().keys({
-        name: Joi.string().required(),
+      body: Joi.object({
+        name: Joi.string().required().trim(),
       }),
     };
 
@@ -44,14 +44,13 @@ class UserSchema extends Schema {
 
   static delete(data) {
     const schema = {
-      params: Joi.object().keys({
+      params: Joi.object({
         userId: Joi.number().integer().required(),
       }),
     };
 
     return this.validate(data, schema);
   }
-
 }
 
 module.exports = UserSchema;

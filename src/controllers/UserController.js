@@ -13,7 +13,7 @@ class UserController {
 
   static async get(req, res) {
     try {
-      const { userId } = req.params;
+      const { userId } = req.joi.params;
       const user = await UserService.get(userId);
 
       if (user) {
@@ -32,7 +32,7 @@ class UserController {
 
   static async post(req, res) {
     const data = {
-      name: req.body.name.trim(),
+      name: req.joi.body.name,
     };
 
     try {
@@ -45,11 +45,13 @@ class UserController {
 
   static async put(req, res) {
     const formattedData = {
-      name: req.body.name.trim(),
+      name: req.joi.body.name,
     };
 
+    const { userId } = req.joi.params;
+
     try {
-      const updated = await UserService.put(req.params.userId, formattedData);
+      const updated = await UserService.put(userId, formattedData);
 
       if (updated) {
         res.send({ success: true });
@@ -66,7 +68,7 @@ class UserController {
   }
 
   static async delete(req, res) {
-    const { userId } = req.params;
+    const { userId } = req.joi.params;
 
     try {
       const deleted = await UserService.delete(userId);
