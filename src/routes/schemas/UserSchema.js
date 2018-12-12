@@ -1,35 +1,35 @@
 const Joi = require('joi');
-const RouteValidator = require('../../middlewares/RouteValidator');
+const Schema = require('./Schema');
 
-class UserSchema extends RouteValidator {
+class UserSchema extends Schema {
 
-  static get get() {
+  static get(data) {
     const schema = {
       params: Joi.object().keys({
         userId: Joi.number().integer().required(),
       }),
     };
 
-    return this.validate(schema);
+    return this.validate(data, schema);
   }
 
-  static get list() {
+  static list(data) {
     const schema = {};
 
-    return this.validate(schema);
+    return this.validate(data, schema);
   }
 
-  static get post() {
+  static post(data) {
     const schema = {
       body: Joi.object().keys({
         name: Joi.string().required(),
       }),
     };
 
-    return this.validate(schema);
+    return this.validate(data, schema);
   }
 
-  static get put() {
+  static put(data) {
     const schema = {
       params: Joi.object().keys({
         userId: Joi.number().integer().required(),
@@ -39,17 +39,17 @@ class UserSchema extends RouteValidator {
       }),
     };
 
-    return this.validate(schema);
+    return this.validate(data, schema);
   }
 
-  static get delete() {
+  static delete(data) {
     const schema = {
       params: Joi.object().keys({
         userId: Joi.number().integer().required(),
       }),
     };
 
-    return this.validate(schema);
+    return this.validate(data, schema);
   }
 
 }
