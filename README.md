@@ -5,18 +5,18 @@ Seed project created to serve as a starting point for new projects, suggesting s
 
 ### Stack
 
-| Responsability  | What |
-|---|---|
-| JS Spec  | ES6  |
-| Process Managament  | PM2  |
-| Code Standard  | ESLint  |  
-| Logs  | Winston |   
-| HTTP Headers  | Helmet |
-| Test Runner | Ava |
-| DB | knex |
-| CORS  | CORS |   
-| Body Parsing  | Body Parser |   
-| Versioning  | SemVer |
+| Responsability     | What        |
+| ------------------ | ----------- |
+| JS Spec            | ES6         |
+| Process Managament | PM2         |
+| Code Standard      | ESLint      |
+| Logs               | Winston     |
+| HTTP Headers       | Helmet      |
+| Test Runner        | Mocha       |
+| DB                 | knex        |
+| CORS               | CORS        |
+| Body Parsing       | Body Parser |
+| Versioning         | SemVer      |
 
 ### Installing and running the app with PM2
 

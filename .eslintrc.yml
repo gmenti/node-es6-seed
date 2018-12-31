@@ -6,3 +6,9 @@ rules:
   no-underscore-dangle: 0
 globals:
   __: true
+  describe: true
+  it: true
+  expect: true
+  sinon: true
+  beforeEach: true
+  afterEach: true
