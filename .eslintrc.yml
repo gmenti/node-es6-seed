@@ -4,11 +4,9 @@ plugins:
 rules:
   arrow-body-style: 0
   no-underscore-dangle: 0
+env:
+  mocha: true
 globals:
   __: true
-  describe: true
-  it: true
   expect: true
   sinon: true
-  beforeEach: true
-  afterEach: true
