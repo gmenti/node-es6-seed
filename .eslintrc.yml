@@ -4,5 +4,9 @@ plugins:
 rules:
   arrow-body-style: 0
   no-underscore-dangle: 0
+env:
+  mocha: true
 globals:
   __: true
+  expect: true
+  sinon: true
