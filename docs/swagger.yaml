@@ -19,42 +19,36 @@ produces:
 paths:
   /user:
     get:
-      summary: Lista todos os usuários.
+      summary: Lista todos as configurações.
       responses:
         200:
-          description: Array com todos usuários em forma de objeto
+          description: Array com todas as configurações
           schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                description: sempre true em caso de sucesso
-              data:
-                type: array
-                items:
-                  $ref: '#/definitions/user'
+            type: array
+            items:
+              $ref: '#/definitions/setting'
 
 
 definitions:
-  userStatus:
-    type: number
-    description: Status de um user
-    enum: &userStatus
-      - 0 - valid
-      - 1 - deleted
-
-  user:
+  settingTypes:
+    type: string
+    description: Tipo do valor de configuração
+    enum: &settingTypes
+      - BOOLEAN
+      - NUMBER
+      - FLOAT
+      - STRING
+      - OBJECT
+  setting:
     type: object
     properties:
       id:
         type: string
       name:
         type: string
-      status:
-        $ref: '#/definitions/userStatus'
+      type:
+        $ref: '#/definitions/settingTypes'
       createdAt:
         type: number
       updatedAt:
-        type: number
-      canceledAt:
         type: number
