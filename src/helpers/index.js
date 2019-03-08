@@ -5,6 +5,7 @@ const loadResources = require('../loadResources');
  * @type {Object}
  * @property {import("./CryptoHelper")} cryptoHelper
  * @property {import("./DatetimeHelper")} datetimeHelper
+ * @property {import("./KnexHelper"} knexHelper
  */
 
 /**
