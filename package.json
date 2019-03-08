@@ -8,7 +8,6 @@
     "stop": "pm2 stop process.yml",
     "restart": "pm2 restart process.yml",
     "dev": "nodemon src/index.js",
-    "test": "nyc ava",
     "test:unit": "mocha --opts test/unit/mocha.opts 'test/unit/**/*.js'",
     "lint": "eslint src test || exit 0",
     "cover": "nyc report --reporter=text-lcov | coveralls"
