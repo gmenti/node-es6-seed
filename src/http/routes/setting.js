@@ -8,10 +8,11 @@ const router = express.Router({ mergeParams: true });
 
 const settingController = new SettingController(services);
 
-/* GET /user */
-router.get('/', settingController.list);
-
-/* GET /user/:userId */
-router.get('/:userId', schemaValidator(settingSchema.get), settingController.get);
+/* GET /settings */
+router.get(
+  '/',
+  schemaValidator(settingSchema.list),
+  settingController.list.bind(settingController)
+);
 
 module.exports = router;

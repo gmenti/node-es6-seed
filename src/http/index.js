@@ -13,7 +13,7 @@ const i18n = require('../i18n');
 const { settingService } = require('../services');
 
 /* Routes */
-const userRoutes = require('./routes/user');
+const settingRoutes = require('./routes/setting');
 
 /* Middlewares */
 const errorHandler = require('./middlewares/errorHandler');
@@ -42,22 +42,12 @@ app.get(['/', '/status'], async (req, res, next) => {
 });
 
 /* Instatiate routes */
-app.use('/user', userRoutes);
+app.use('/settings', settingRoutes);
 
 app.all('*', (req, res, next) => {
   next(new NotFound('Page not found'));
 });
 
 app.use(errorHandler);
-
-(async () => {
-  debug('Loading settings');
-  await settingService.load();
-
-  debug('Starting server');
-  app.listen(process.env.PORT, () => {
-    debug(`Server started on port ${process.env.PORT}`);
-  });
-})();
 
 module.exports = app;
