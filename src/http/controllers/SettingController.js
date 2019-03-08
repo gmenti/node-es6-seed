@@ -10,23 +10,7 @@ class SettingController {
 
   async list(req, res, next) {
     try {
-      const rows = await this.settingService.list();
-      res.send(rows);
-    } catch (err) {
-      next(err);
-    }
-  }
-
-  async get(req, res, next) {
-    try {
-      const { name } = req.joi.params;
-      const setting = await this.settingService.get(name);
-
-      if (!setting) {
-        throw new NotFound(`Setting #${name} not exists`);
-      }
-     
-      res.send(setting);
+      res.send(this.settingService.cache);
     } catch (err) {
       next(err);
     }
