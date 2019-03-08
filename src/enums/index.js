@@ -3,7 +3,7 @@ const loadResources = require('../loadResources');
 /**
  * @typedef EnumContainer
  * @type {Object}
- * @property {import('./userStatuses')} userStatuses
+ * @property {import('./settingTypes')} settingTypes
  */
 
 /**

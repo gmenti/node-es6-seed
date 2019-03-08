@@ -1,3 +1,5 @@
+const { settingTypes } = require('../enums');
+
 class SettingService {
   /**
    * @param {import('./index').ModelContainer} param0
@@ -14,23 +16,23 @@ class SettingService {
     settings.forEach((setting) => {
       const { name, type, value } = setting;
       switch (type) {
-        case 'NUMBER':
+        case settingTypes.NUMBER:
           data[name] = parseInt(value, 10);
           break;
 
-        case 'FLOAT':
+        case settingTypes.FLOAT:
           data[name] = parseFloat(value);
           break;
 
-        case 'STRING':
+        case settingTypes.STRING:
           data[name] = String(value);
           break;
 
-        case 'BOOLEAN':
+        case settingTypes.BOOLEAN:
           data[name] = value === 'true';
           break;
 
-        case 'OBJECT':
+        case settingTypes.OBJECT:
           try {
             data[name] = JSON.parse(value);
           } catch (err) {
