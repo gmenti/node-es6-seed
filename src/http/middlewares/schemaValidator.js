@@ -1,13 +1,12 @@
+const Joi = require('joi');
 
-module.exports = (Schema, methodName) => {
+module.exports = (schema) => {
   return (req, res, next) => {
-    const data = {
-      body: req.body,
-      query: req.query,
-      params: req.params,
-    };
-
-    const validation = Schema[methodName](data);
+    const validation = Joi.validate(req, schema, {
+      abortEarly: false,
+      stripUnknown: true,
+      allowUnknown: true,
+    });
 
     if (!validation.error) {
       req.joi = {
@@ -22,5 +21,5 @@ module.exports = (Schema, methodName) => {
         messages: validation.error.details,
       });
     }
-  }
-}
+  };
+};

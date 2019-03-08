@@ -1,6 +1,6 @@
 /* .env lib */
 require('dotenv').config();
-const debug = require('debug')('app');
+const debug = require('debug')('http');
 
 /* Dependencies */
 const express = require('express');
@@ -8,19 +8,18 @@ const helmet = require('helmet');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const compression = require('compression');
-const i18n = require('./config/i18n');
-const { knex } = require('./config/db');
-const Settings = require('./config/Settings');
-const Logger = require('./helpers/Logger');
+const { NotFound } = require('http-errors');
+const i18n = require('../i18n');
+const { settingService } = require('../services');
 
 /* Routes */
 const userRoutes = require('./routes/user');
 
+/* Middlewares */
+const errorHandler = require('./middlewares/errorHandler');
+
 /* Express initialization */
 const app = express();
-
-/* Logger */
-const LoggerConfig = require('./config/LoggerConfig');
 
 /* Express utilites */
 app.use(helmet());
@@ -33,37 +32,32 @@ app.use(
   }),
 );
 
-/* Log express request and response */
-LoggerConfig.expressRequest(app);
-
 /* Status endpoint */
-app.get(['/', '/status'], async (req, res) => {
+app.get(['/', '/status'], async (req, res, next) => {
   try {
-    await knex.raw('SELECT 1');
     res.sendStatus(204);
   } catch (err) {
-    Logger.error(err);
-    res.status(500).send('error');
+    next(err);
   }
 });
 
 /* Instatiate routes */
 app.use('/user', userRoutes);
 
-/* Log errors */
-LoggerConfig.expressError(app);
-
-app.all('*', (req, res) => {
-  res.status(404).send({ success: false, code: '404' });
+app.all('*', (req, res, next) => {
+  next(new NotFound('Page not found'));
 });
 
-debug('load settings');
+app.use(errorHandler);
+
 (async () => {
-  await Settings.load();
-  await LoggerConfig.init();
+  debug('Loading settings');
+  await settingService.load();
 
   debug('Starting server');
   app.listen(process.env.PORT, () => {
     debug(`Server started on port ${process.env.PORT}`);
   });
 })();
+
+module.exports = app;

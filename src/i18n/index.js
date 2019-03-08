@@ -1,7 +1,6 @@
+const path = require('path');
 const i18n = require('i18n');
-const { join } = require('path');
 
-/* i18n */
 i18n.configure({
   locales: [
     'pt-BR',
@@ -12,7 +11,7 @@ i18n.configure({
     en: 'en-US',
   },
   defaultLocale: 'pt-BR',
-  directory: join(__dirname, '..', 'locales'),
+  directory: path.join(__dirname, 'locales'),
   register: global,
 });
 

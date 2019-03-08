@@ -1,9 +1,9 @@
 const moment = require('moment-timezone');
 
-class Datetime {
-  static toUnixEpoch(dateString) {
+class DatetimeHelper {
+  toUnixEpoch(dateString) {
     return moment.utc(dateString).valueOf();
   }
 }
 
-module.exports = Datetime;
+module.exports = DatetimeHelper;

@@ -1,46 +1,39 @@
-const { knex } = require('../config/db');
-const userType = require('../types/user');
+const Model = require('./Model');
+const { cryptoHelper } = require('../helpers');
 
-class UserModel {
-  static list() {
-    return knex.from('user').whereNot('user.status', userType.DELETED);
+/**
+ * @typedef User
+ * @type {Object}
+ * @property {String} id
+ * @property {String} fullName
+ * @property {String} emailAddress
+ * @property {String} phoneNumber
+ * @property {String} documentNumber
+ * @property {String} passwordHash
+ * @property {Date} passwordChangedAt
+ * @property {String} status
+ * @property {Date} createdAt
+ * @property {Date} updatedAt
+ */
+
+/**
+ * @extends {Model<User>}
+ */
+class UserModel extends Model {
+  constructor(database) {
+    super(database, 'user');
   }
 
-  static get(userId) {
-    return knex
-      .select('id', 'name', 'status')
-      .from('user')
-      .whereNot('user.status', userType.DELETED)
-      .where('user.id', userId)
+  /**
+   * @param {Object} identifiers
+   * @return {import('./Model').ResultTransaction<User>}
+   */
+  getByPasswordAndIdentifiers(password, identifiers) {
+    return this.table
+      .where(identifiers)
+      .where('passwordHash', cryptoHelper.encryptPassword(password))
       .first();
-  }
-
-  static post(data) {
-    return knex.from('user').insert(data);
-  }
-
-  static put(userId, data) {
-    const query = knex.from('user');
-
-    if (data.name) {
-      query.update('name', data.name);
-    }
-
-    return query
-      .where('user.id', userId)
-      .whereNot('user.status', userType.DELETED);
-  }
-
-  static delete(userId) {
-    return knex
-      .from('user')
-      .where('user.id', userId)
-      .whereNot('user.status', userType.DELETED)
-      .update({
-        status: userType.DELETED,
-        deletedAt: knex.raw('NOW()'),
-      });
-  }
+  } 
 }
 
 module.exports = UserModel;
